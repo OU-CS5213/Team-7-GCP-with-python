@@ -19,7 +19,7 @@ https://34.102.205.200
 Webpage Static URL for Cloud run implementation:
 -----------------------------------------------------
 
-https://34.110.171.39 (Not working currently)
+https://34.110.171.39
 
 Cloud Function URL
 ------------------
@@ -223,7 +223,7 @@ gcloud compute forwarding-rules create fractalforwarding1 --load-balancing-schem
 
 https://34.102.205.200
 
--> Cloud Run (Having issues so its not currently working)
+-> Cloud Run 
 
 https://34.110.171.39
 
