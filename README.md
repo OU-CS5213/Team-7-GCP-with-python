@@ -84,17 +84,23 @@ Steps Executed to create cloud run:
 
 3. Same as step 7 from above.
 
-4. Deployed the cloud run via command line from GCP instance
+4. Edit Dockerfile and replace FROM python:2-slim with FROM python:3-slim
+
+5. Uncomment gunicorn from requirements.txt
+
+6. Uncomment the ENTRYPOINT entry for gunicorn replacing the default entry in Dockerfile
+
+7. Deployed the cloud run via command line from GCP instance
 
 gcloud run deploy getfractal1 --source . --allow-unauthenticated --platform managed
 
-5. Added allUsers under permission via console with the role "Cloud Run Invoker" to the run getfractal1/
+8. Added allUsers under permission via console with the role "Cloud Run Invoker" to the run getfractal1/
 
-6. Verified Deployment of cloud run gerfractal1 by opening the url found under trigger.
+9. Verified Deployment of cloud run gerfractal1 by opening the url found under trigger.
 
 https://getfractal1-47ntsdicza-uc.a.run.app
 
-7. Cloud Run deployement of html page complete.
+10. Cloud Run deployement of html page complete.
 
 
 Steps Executed to access the webpage via static IP:
