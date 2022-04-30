@@ -11,13 +11,24 @@ Naveen Kumar Gorantla
 
 Pradipkumar Rajasekaran
 
-Webpage Static URL
-------------------
+Webpage Static URL For Cloud function implementation:
+----------------------------------------------------
+
 https://34.102.205.200
+
+Webpage Static URL for Cloud function implementation:
+-----------------------------------------------------
+
+https://34.110.171.39 (Not working currently)
 
 Cloud Function URL
 ------------------
 https://us-central1-gold-episode-347200.cloudfunctions.net/getfractal1
+
+
+Cloud Run URL
+------------
+https://getfractal1-47ntsdicza-uc.a.run.app
 
 
 Screenshots from Tashfeen's Website:
@@ -64,8 +75,32 @@ https://us-central1-gold-episode-347200.cloudfunctions.net/getfractal1
 11. Cloud function deployment of html page complete.
 
 
+Steps Executed to create cloud run:
+==================================
+
+1. Same steps from 1 to 5 from cloud function.
+
+2. Enabled Cloud Run API and artifact registry API.
+
+3. Same as step 7 from above.
+
+4. Deployed the cloud run via command line from GCP instance
+
+gcloud run deploy getfractal1 --source . --allow-unauthenticated --platform managed
+
+5. Added allUsers under permission via console with the role "Cloud Run Invoker" to the run getfractal1/
+
+6. Verified Deployment of cloud run gerfractal1 by opening the url found under trigger.
+
+https://getfractal1-47ntsdicza-uc.a.run.app
+
+7. Cloud Run deployement of html page complete.
+
+
 Steps Executed to access the webpage via static IP:
 ===================================================
+
+-> Same steps will be executed for both Cloud function and cloud run except where we link the function/run to the load balancer.
 
 Documentation used:
 
@@ -83,12 +118,23 @@ Steps
 
 1. Reserve an external IP address
 
+->Cloud Function
+
 gcloud compute addresses create fractaldisplay --network-tier=PREMIUM --ip-version=IPV4 --global
 
+->Cloud run
+
+gcloud compute addresses create fractaldisplay1 --network-tier=PREMIUM --ip-version=IPV4 --global
 
 2. Create a serverless NEG for your serverless app with cloud function
 
+->Cloud Function
+
 gcloud compute network-endpoint-groups create fractal --region=us-central1 --network-endpoint-type=serverless --cloud-function-name=getfractal1
+
+->Cloud run
+
+gcloud compute network-endpoint-groups create fractal1 --region=us-central1 --network-endpoint-type=serverless --cloud-run-service=getfractal1
 
 3. Create an SSL certificate resource
 
@@ -115,28 +161,64 @@ gcloud compute network-endpoint-groups create fractal --region=us-central1 --net
 
 4. Create a backend service
 
+->Cloud Function
+
 gcloud compute backend-services create get-fractal --load-balancing-scheme=EXTERNAL --global
+
+->Cloud Run
+gcloud compute backend-services create get-fractal1 --load-balancing-scheme=EXTERNAL --global
+
 
 5. Add the serverless NEG as a backend to the backend service
 
+-> Cloud Function
+
 gcloud compute backend-services add-backend get-fractal --global --network-endpoint-group=fractal --network-endpoint-group-region=us-central1
+
+-> Cloud Run
+
+gcloud compute backend-services add-backend get-fractal1 --global --network-endpoint-group=fractal1 --network-endpoint-group-region=us-central1
 
 6. Create a URL map to route incoming requests to the backend service:
 
+->Cloud Function
+
 gcloud compute url-maps create fractal-map --default-service get-fractal
+
+->Cloud Run 
+
+gcloud compute url-maps create fractal-map1 --default-service get-fractal1
+
 
 7. Create a target HTTP(S) proxy to route requests to your URL map
 
+->Cloud Function 
+
 gcloud compute target-https-proxies create getfractalgcp --global --url-map fractal-map --global-url-map --ssl-certificates fractal-certificate --global-ssl-certificates
+
+
+->Cloud Run
+
+gcloud compute target-https-proxies create getfractalgcp1 --global --url-map fractal-map1 --global-url-map --ssl-certificates fractal-certificate --global-ssl-certificates
 
 8. Create a forwarding rule to route incoming requests to the proxy
 
+->Cloud Function
+
 gcloud compute forwarding-rules create fractalforwarding --load-balancing-scheme=EXTERNAL --network-tier=PREMIUM --address=fractaldisplay --target-https-proxy=getfractalgcp --global --ports=443
+
+->Cloud Run
+
+gcloud compute forwarding-rules create fractalforwarding1 --load-balancing-scheme=EXTERNAL --network-tier=PREMIUM --address=fractaldisplay1 --target-https-proxy=getfractalgcp1 --global --ports=443
 
 9. Verify the load balancer is working by opening the below IP address:
 
+-> Cloud function
+
 https://34.102.205.200
 
+-> Cloud Run (Having issues so its not currently working)
 
+https://34.110.171.39
 
 Thank you 
