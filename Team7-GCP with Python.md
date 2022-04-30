@@ -29,11 +29,13 @@ Pradipkumar Rajasekaran
 ``` https://us-central1-gold-episode-347200.cloudfunctions.net/getfractal1 ```
 ### Cloud Run URL
 ``` https://getfractal1-47ntsdicza-uc.a.run.app/ ```
-### Screenshots from Tashfeen's Website 
+### Screenshots from Tashfeen's Website
+
 ``` https://tashfeen.org/fractalsetc/build/index.html ```
 ---
 ### Files Used 
-```cloud/python/main.py
+```
+cloud/python/main.py
 cloud/python/templates/getfractal.html
 cloud/python/cert
 ```
@@ -61,12 +63,6 @@ cloud/python/cert
 ``` https://us-central1-gold-episode-347200.cloudfunctions.net/getfractal1 ```
 
 - Cloud function deployment of html page complete.
-
----
-
-# Cloud Functions
-### Load Balancer with Cloud Function
-``` https://cloud.google.com/load-balancing/docs/https/setting-up-https-serverless#gcloud_1 ```
 
 ---
 # Cloud Run
@@ -101,22 +97,27 @@ cloud/python/cert
 - Same steps will be executed for both Cloud function and cloud run 
 - except where we link the function/run to the load balancer.
 
+### Load Balancer with Cloud Function
+``` https://cloud.google.com/load-balancing/docs/https/setting-up-https-serverless#gcloud_1 ```
+
 # Self Signed SSL Certificate 
 ``` https://cloud.google.com/load-balancing/docs/ssl-certificates/self-managed-certs ```
 
+
+
 ---
 # Reserve IP Address and Endpoint
-- Reserve an external IP address
-- Cloud Function
-``` gcloud compute addresses create fractaldisplay --network-tier=PREMIUM --ip-version=IPV4 --global ```
-- Cloud Run
-``` gcloud compute addresses create fractaldisplay1 --network-tier=PREMIUM --ip-version=IPV4 --global ```
+- Reserve an external IP address for Cloud Function and Cloud Run
+  - __Cloud Function__
+  ``` gcloud compute addresses create fractaldisplay --network-tier=PREMIUM --ip-version=IPV4 --global ```
+  - __Cloud Run__
+  ``` gcloud compute addresses create fractaldisplay1 --network-tier=PREMIUM --ip-version=IPV4 --global ```
 
-- Create a serverless NEG for your serverless app with cloud function
-- Cloud Function
-``` gcloud compute network-endpoint-groups create fractal --region=us-central1 --network-endpoint-type=serverless --cloud-function-name=getfractal1```
-- Cloud Run
-```gcloud compute network-endpoint-groups create fractal1 --region=us-central1 --network-endpoint-type=serverless --cloud-run-service=getfractal1 ```
+- Create a serverless NEG for your serverless app with cloud function and CLoud Run
+  - __Cloud Function__
+  ``` gcloud compute network-endpoint-groups create fractal --region=us-central1 --network-endpoint-type=serverless --cloud-function-name=getfractal1```
+  - __Cloud Run__
+  ```gcloud compute network-endpoint-groups create fractal1 --region=us-central1 --network-endpoint-type=serverless --cloud-run-service=getfractal1 ```
 ---
 # Self Signed SSL Certificate
 ### Create an SSL certificate resource
@@ -138,38 +139,38 @@ cloud/python/cert
 
 
 # Load Balancer
-- Create a backend service
-- Cloud Funtion
-``` gcloud compute backend-services create get-fractal --load-balancing-scheme=EXTERNAL --global ```
-- Cloud Run
-``` Cloud Run gcloud compute backend-services create get-fractal1 --load-balancing-scheme=EXTERNAL --global ```
+- Create a backend service for Cloud Function and Cloud Run
+  - __Cloud Funtion__
+  ``` gcloud compute backend-services create get-fractal --load-balancing-scheme=EXTERNAL --global ```
+  - __Cloud Run__
+  ``` Cloud Run gcloud compute backend-services create get-fractal1 --load-balancing-scheme=EXTERNAL --global ```
 ---
 # Load Balancer (continous)
 - Add the serverless NEG as a backend to the backend service
-- Cloud Funtion
-``` gcloud compute backend-services add-backend get-fractal --global --network-endpoint-group=fractal --network-endpoint-group-region=us-central1 ```
-- Cloud Run
-``` gcloud compute backend-services add-backend get-fractal1 --global --network-endpoint-group=fractal1 --network-endpoint-group-region=us-central1 ```
+  - __Cloud Funtion__
+  ``` gcloud compute backend-services add-backend get-fractal --global --network-endpoint-group=fractal --network-endpoint-group-region=us-central1 ```
+  - __Cloud Run__
+  ``` gcloud compute backend-services add-backend get-fractal1 --global --network-endpoint-group=fractal1 --network-endpoint-group-region=us-central1 ```
 
 - Create a URL map to route incoming requests to the backend service
-- Cloud Funtion
-``` gcloud compute url-maps create fractal-map --default-service get-fractal ```
-- Cloud Run 
-``` gcloud compute url-maps create fractal-map1 --default-service get-fractal1 ```
+  - __Cloud Funtion__
+  ``` gcloud compute url-maps create fractal-map --default-service get-fractal ```
+  - __Cloud Run__ 
+  ``` gcloud compute url-maps create fractal-map1 --default-service get-fractal1 ```
 
 ---
 # Load Balancer (continous)
 - Create a target HTTP(S) proxy to route requests to your URL map
-- Cloud Funtion
-``` gcloud compute target-https-proxies create getfractalgcp --global --url-map fractal-map --global-url-map --ssl-certificates fractal-certificate --global-ssl-certificates ```
-- Cloud Run
-``` gcloud compute target-https-proxies create getfractalgcp1 --global --url-map fractal-map1 --global-url-map --ssl-certificates fractal-certificate --global-ssl-certificates ```
+  - __Cloud Funtion__
+  ``` gcloud compute target-https-proxies create getfractalgcp --global --url-map fractal-map --global-url-map --ssl-certificates fractal-certificate --global-ssl-certificates ```
+  - __Cloud Run__
+  ``` gcloud compute target-https-proxies create getfractalgcp1 --global --url-map fractal-map1 --global-url-map --ssl-certificates fractal-certificate --global-ssl-certificates ```
 
 - Create a forwarding rule to route incoming requests to the proxy
-- Cloud Function
-``` gcloud compute forwarding-rules create fractalforwarding --load-balancing-scheme=EXTERNAL --network-tier=PREMIUM --address=fractaldisplay --target-https-proxy=getfractalgcp --global --ports=443 ``` 
-- Cloud Run
-``` gcloud compute forwarding-rules create fractalforwarding1 --load-balancing-scheme=EXTERNAL --network-tier=PREMIUM --address=fractaldisplay1 --target-https-proxy=getfractalgcp1 --global --ports=443 ``` 
+  - __Cloud Function__
+  ``` gcloud compute forwarding-rules create fractalforwarding --load-balancing-scheme=EXTERNAL --network-tier=PREMIUM --address=fractaldisplay --target-https-proxy=getfractalgcp --global --ports=443 ``` 
+  - __Cloud Run__
+  ``` gcloud compute forwarding-rules create fractalforwarding1 --load-balancing-scheme=EXTERNAL --network-tier=PREMIUM --address=fractaldisplay1 --target-https-proxy=getfractalgcp1 --global --ports=443 ``` 
 ---
 ### Verify the load balancer is working by opening the below IP address:
  - Cloud Function
@@ -177,6 +178,5 @@ cloud/python/cert
 
 - Cloud Run 
 ``` https://34.110.171.39/ ```
- ---
- # Thank you
 ---
+ # Thank you
