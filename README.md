@@ -16,7 +16,7 @@ Webpage Static URL For Cloud function implementation:
 
 https://34.102.205.200
 
-Webpage Static URL for Cloud function implementation:
+Webpage Static URL for Cloud run implementation:
 -----------------------------------------------------
 
 https://34.110.171.39 (Not working currently)
