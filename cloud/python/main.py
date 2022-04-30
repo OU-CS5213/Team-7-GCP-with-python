@@ -28,41 +28,6 @@ def getfractal1(gc_request=None):
     
     return render_template('getfractal.html')
 
-#def translate(gcf_request=None):
-    """
-    main handler - show form and possibly previous translation
-    """
-
-    # Flask Request object passed in for Cloud Functions
-    # (use gcf_request for GCF but flask.request otherwise)
-#    local_request = gcf_request if gcf_request else request
-
-    # reset all variables (GET/POST)
- #   text = translated = None
-
-    # form submission and if there is data to process (POST)
-  
-  #if local_request.method == 'POST':
-#     text = local_request.form['text'].strip()
- #       if text:
-  #          data = {
-   #             'contents': [text],
-    #            'parent': PARENT,
-     #           'target_language_code': TARGET[0],
-   #         }
-            # handle older call for backwards-compatibility
-      #      try:
-       #         rsp = TRANSLATE.translate_text(request=data)
-        #    except TypeError:
-         #       rsp = TRANSLATE.translate_text(**data)
-          #  translated = rsp.translations[0].translated_text
-
-    # create context & render template
-  #  context = {
-   #     'orig':  {'text': text, 'lc': SOURCE},
-    #    'trans': {'text': translated, 'lc': TARGET},
-   # }
-   # return render_template('index.html', **context)
 
 
 if __name__ == '__main__':
