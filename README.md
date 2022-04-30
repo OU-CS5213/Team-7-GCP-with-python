@@ -20,10 +20,17 @@ Cloud Function URL
 https://us-central1-gold-episode-347200.cloudfunctions.net/getfractal1
 
 
+Screenshots from Tashfeen's Website:
+-----------------------------------
+
+https://tashfeen.org/fractalsetc/build/index.html
+
 Files used
 ==========
 cloud/python/main.py
+
 cloud/python/templates/getfractal.html
+
 cloud/python/cert
 
 
@@ -69,6 +76,10 @@ https://cloud.google.com/load-balancing/docs/https/setting-up-https-serverless#g
 Self Signed SSL Certificate
 ---------------------------
 https://cloud.google.com/load-balancing/docs/ssl-certificates/self-managed-certs
+
+
+Steps
+-----
 
 1. Reserve an external IP address
 
@@ -125,4 +136,7 @@ gcloud compute forwarding-rules create fractalforwarding --load-balancing-scheme
 9. Verify the load balancer is working by opening the below IP address:
 
 https://34.102.205.200
- 
+
+
+
+Thank you 
