@@ -97,7 +97,7 @@ cloud/python/cert
 - Same steps will be executed for both Cloud function and cloud run 
 - except where we link the function/run to the load balancer.
 
-### Load Balancer with Cloud Function
+# Load Balancer with Cloud Function
 ``` https://cloud.google.com/load-balancing/docs/https/setting-up-https-serverless#gcloud_1 ```
 
 # Self Signed SSL Certificate 
@@ -140,20 +140,20 @@ cloud/python/cert
 
 # Load Balancer
 - Create a backend service for Cloud Function and Cloud Run
-  - __Cloud Funtion__
+  - __Cloud Function__
   ``` gcloud compute backend-services create get-fractal --load-balancing-scheme=EXTERNAL --global ```
   - __Cloud Run__
   ``` Cloud Run gcloud compute backend-services create get-fractal1 --load-balancing-scheme=EXTERNAL --global ```
 ---
 # Load Balancer (continous)
 - Add the serverless NEG as a backend to the backend service
-  - __Cloud Funtion__
+  - __Cloud Function__
   ``` gcloud compute backend-services add-backend get-fractal --global --network-endpoint-group=fractal --network-endpoint-group-region=us-central1 ```
   - __Cloud Run__
   ``` gcloud compute backend-services add-backend get-fractal1 --global --network-endpoint-group=fractal1 --network-endpoint-group-region=us-central1 ```
 
 - Create a URL map to route incoming requests to the backend service
-  - __Cloud Funtion__
+  - __Cloud Function__
   ``` gcloud compute url-maps create fractal-map --default-service get-fractal ```
   - __Cloud Run__ 
   ``` gcloud compute url-maps create fractal-map1 --default-service get-fractal1 ```
@@ -161,7 +161,7 @@ cloud/python/cert
 ---
 # Load Balancer (continous)
 - Create a target HTTP(S) proxy to route requests to your URL map
-  - __Cloud Funtion__
+  - __Cloud Function__
   ``` gcloud compute target-https-proxies create getfractalgcp --global --url-map fractal-map --global-url-map --ssl-certificates fractal-certificate --global-ssl-certificates ```
   - __Cloud Run__
   ``` gcloud compute target-https-proxies create getfractalgcp1 --global --url-map fractal-map1 --global-url-map --ssl-certificates fractal-certificate --global-ssl-certificates ```
