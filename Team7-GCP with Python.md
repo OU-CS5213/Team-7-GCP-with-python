@@ -173,10 +173,10 @@ cloud/python/cert
   ``` gcloud compute forwarding-rules create fractalforwarding1 --load-balancing-scheme=EXTERNAL --network-tier=PREMIUM --address=fractaldisplay1 --target-https-proxy=getfractalgcp1 --global --ports=443 ``` 
 ---
 ### Verify the load balancer is working by opening the below IP address:
- - Cloud Function
+ - __Cloud Function__
  ``` https://34.102.205.200``` 
 
-- Cloud Run 
+- __Cloud Run__ 
 ``` https://34.110.171.39/ ```
 ---
  # Thank you
